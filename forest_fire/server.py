@@ -4,7 +4,7 @@ from mesa.visualization.UserParam import UserSettableParameter
 
 from .model import ForestFire
 
-COLORS = {"Fine": "#00AA00", "On Fire": "#880000", "Burned Out": "#000000", "Fire Put Out": "#0000AA"}
+COLORS = {"Fine": "#00AA00", "On Fire": "#880000", "Burned Out": "#000000", "Fire Put Out": "#0000FF"}
 
 
 def forest_fire_portrayal(tree):
@@ -19,6 +19,12 @@ def forest_fire_portrayal(tree):
 
 
 canvas_element = CanvasGrid(forest_fire_portrayal, 100, 100, 500, 500)
+cluster_chart_fine = ChartModule(
+    [{"Label": "Number of clusters (Fine)", "Color": "#00AA00"}], data_collector_name="datacollector_cluster_fine"
+)
+cluster_chart_fireputout = ChartModule(
+    [{"Label": "Number of clusters (Fire Put Out)", "Color": "#0000FF"}], data_collector_name="datacollector_cluster_fireputout"
+)
 tree_chart = ChartModule(
     [{"Label": label, "Color": color} for (label, color) in COLORS.items()]
 )
@@ -33,5 +39,5 @@ model_params = {
     "wind": UserSettableParameter("slider", "Wind velocity (m/s)", 10.0, 0.0, 50.0, 0.5)
 }
 server = ModularServer(
-    ForestFire, [canvas_element, tree_chart, pie_chart], "Forest Fire", model_params
+    ForestFire, [canvas_element, tree_chart, pie_chart, cluster_chart_fine, cluster_chart_fireputout], "Forest Fire", model_params
 )
